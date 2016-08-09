@@ -1,5 +1,15 @@
 package com.fh.util;
 
+import com.xmjr.sms.zjhl.SMSOperationUtil;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,18 +19,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
-
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.methods.PostMethod;
-
-
-
-import org.dom4j.Document;   
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;   
-import org.dom4j.Element;   
 
 /**
  * 通过短信接口发送短信
@@ -59,7 +57,10 @@ public class SmsUtil {
  		String PostData = "";
 		try {
 			PostData = "account="+account+"&password="+password+"&mobile="+mobile+"&content="+URLEncoder.encode(code,"utf-8");
-		} catch (UnsupportedEncodingException e) {
+           //营销类短信发送接口
+            boolean result = SMSOperationUtil.sendOperationSMS(mobile, URLEncoder.encode(code, "utf-8"));
+            System.out.println(result);
+        } catch (UnsupportedEncodingException e) {
 			System.out.println("短信提交失败");
 		}
 		 //System.out.println(PostData);
