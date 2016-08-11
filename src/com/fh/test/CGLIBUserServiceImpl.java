@@ -1,21 +1,21 @@
 package com.fh.test;
 
 /**
- * FIXME : Document this class<br>
+ * 业务实现类<br>
  *
  * @author hanfajie (jet@xmjr.com)<br>
  * @since 8/9/16 5:33 PM<br>
  * <p/>
- * Copyright (c) 2016，2116,北京小马金融服务有限公司 All Rights Reserved.
+ * Copyright (c) 2016，2116 All Rights Reserved.
  * LICENSE INFORMATION
  */
-public class CGLIBUserServiceImpl
+public class CGLIBUserServiceImpl implements CGLIBUserService
 {
     public void sayHello(){
-        System.out.println("CGLIBUserServiceImpl的sayHello方法被调用！");
+        System.out.println("hello！");
     }
 
     public void sayBye(){
-        System.out.println("CGLIBUserServiceImpl的sayHello方法被调用！");
+        System.out.println("bye！");
     }
 }
