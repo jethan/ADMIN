@@ -1,7 +1,9 @@
-package com.fh.test;
+package com.fh.test.proxy;
 
-import com.fh.interceptor.ClassHandler;
-import com.fh.interceptor.ClassInterceptor;
+import com.fh.service.proxy.CGLIBUserService;
+import com.fh.service.proxy.CGLIBUserServiceImpl;
+import com.fh.proxy.ClassHandler;
+import com.fh.proxy.ClassInterceptor;
 
 import java.lang.reflect.Proxy;
 

@@ -1,4 +1,4 @@
-package com.fh.test;
+package com.fh.service.proxy;
 
 /**
  * 业务实现类<br>

@@ -6,20 +6,24 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd	
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
-	
-	<mvc:annotation-driven/>	
-	<mvc:default-servlet-handler/>
+
+    <!--相当于注册了DefaultAnnotationHandlerMapping和AnnotationMethodHandlerAdapter两个bean，配置一些messageconverter。
+    即解决了@Controller注解的使用前提配置。 要使用spring mvc中的@Controller注解，就必须要配置<mvc:annotation-driven />-->
+	<mvc:annotation-driven/>
+    <!-- 对静态资源文件的访问 方式1 spring-mvc-3.0才支持此方式 -->
+    <mvc:default-servlet-handler/>
+    <!-- 对静态资源文件的访问 方式2 两种方式都可以，都加上也不会有问题-->
+    <!--<mvc:resources mapping="/admin/**" location="/,/admin/" />
+    <mvc:resources mapping="/static/**" location="/,/static/" />
+    <mvc:resources mapping="/plugins/**" location="/,/plugins/" />
+    <mvc:resources mapping="/uploadFiles/**" location="/,/uploadFiles/" />-->
+
+    <!--如果为默认servlet配置了新的名称customServlet，或者这个容器servlet名字不在spring列表中时，必须显式配置默认servlet的名字，如下：-->
+    <!--<mvc:default-servlet-handler default-servlet-name="customServlet"/>-->
 	
 	<context:component-scan base-package="com.fh.controller" />
-	<context:component-scan base-package="com.json" />
 
-	<!-- 对静态资源文件的访问  restful-->     
-	<mvc:resources mapping="/admin/**" location="/,/admin/" />
-	<mvc:resources mapping="/static/**" location="/,/static/" />
-	<mvc:resources mapping="/plugins/**" location="/,/plugins/" />
-	<mvc:resources mapping="/uploadFiles/**" location="/,/uploadFiles/" /> 
-
-	<!-- 访问拦截  -->  
+	<!-- 访问拦截  -->
   	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**/**"/>
@@ -33,8 +37,8 @@
 		<property name="suffix" value=".jsp"/>
 	</bean>
 	
-	<bean id="exceptionResolver" class="com.fh.resolver.MyExceptionResolver"></bean>
-	<!-- 上传拦截，如最大上传值及最小上传值 -->
+	<bean id="exceptionResolver" class="com.fh.resolver.MyExceptionResolver"/>
+	<!-- 上传拦截，如最大上传值及最小上传值100*1024*1024b=100M -->
 	  <bean id="multipartResolver"   class="org.springframework.web.multipart.commons.CommonsMultipartResolver" >   
 		  <property name="maxUploadSize">    
 	          <value>104857600</value>    
