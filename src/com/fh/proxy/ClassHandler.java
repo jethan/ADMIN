@@ -1,4 +1,4 @@
-package com.fh.interceptor;
+package com.fh.proxy;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
  * @author hanfajie (jet@xmjr.com)<br>
  * @since 8/11/16 1:12 PM<br>
  * <p/>
- * Copyright (c) 2016，2116,北京小马金融服务有限公司 All Rights Reserved.
+ * Copyright (c) 2016，2116 All Rights Reserved.
  * LICENSE INFORMATION
  */
 public class ClassHandler implements InvocationHandler
