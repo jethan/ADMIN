@@ -3,8 +3,12 @@
 	xmlns="http://java.sun.com/xml/ns/javaee"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
+    <!-- Web容器加载顺序ServletContext-context-param-listener-filter-servlet -->
 
-	<context-param>
+    <!-- 指定Spring的配置文件 -->
+    <!-- 否则Spring会默认从WEB-INF下寻找配置文件,contextConfigLocation属性是Spring内部固定的 -->
+    <!-- 通过ContextLoaderListener的父类ContextLoader的第120行发现CONFIG_LOCATION_PARAM固定为contextConfigLocation -->
+    <context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:spring/ApplicationContext.xml</param-value>
 	</context-param>
@@ -14,15 +18,17 @@
 		<param-value>classpath:log4j.properties</param-value>
 	</context-param>
 
-    <!-- Shiro filter start 确保Web项目中需要权限管理的URL都可以被Shiro拦截过滤。
-    通常将这段代码中的filter-mapping放在所有filter-mapping之前，以达到shiro是第一个对web请求进行拦截过滤之目的。
-    这里的fileter-name应该要和第二步中配置的java bean的id一致。-->
+    <!-- Shiro filter start 配置Shiro过滤器,先让Shiro过滤系统接收到的请求 -->
+    <!-- 这里filter-name必须对应applicationContext.xml中定义的<bean id="shiroFilter"/> -->
+    <!-- 使用[/*]匹配所有请求,保证所有的可控请求都经过Shiro的过滤 -->
+    <!-- 通常会将此filter-mapping放置到最前面(即其他filter-mapping前面),以保证它是过滤器链中第一个起作用的 -->
     <filter>
         <filter-name>shiroFilter</filter-name>
         <filter-class>
             org.springframework.web.filter.DelegatingFilterProxy
         </filter-class>
         <init-param>
+            <!-- 该值缺省为false,表示生命周期由SpringApplicationContext管理,设置为true则表示由ServletContainer管理 -->
             <param-name>targetFilterLifecycle</param-name>
             <param-value>true</param-value>
         </init-param>
@@ -33,18 +39,26 @@
     </filter-mapping>
     <!-- Shiro filter end -->
 
-	<filter>
+    <!-- 解决乱码问题 start-->
+    <!-- forceEncoding默认为false,此时效果可大致理解为request.setCharacterEncoding("UTF-8") -->
+    <!-- forceEncoding=true后,可大致理解为request.setCharacterEncoding("UTF-8")和response.setCharacterEncoding("UTF-8") -->
+    <filter>
 		<filter-name>encodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
 		<init-param>
 			<param-name>encoding</param-name>
 			<param-value>utf-8</param-value>
 		</init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
 	</filter>
 	<filter-mapping>
 		<filter-name>encodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+    <!-- 解决乱码问题 end-->
 
 	<!-- 连接池 启用Web监控统计功能   start-->
 	<filter>
@@ -78,11 +92,24 @@
 	<listener>
         <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
 	</listener>
-	<listener>
+
+    <!-- 防止发生java.beans.Introspector内存泄露,应将它配置在ContextLoaderListener的前面 -->
+    <!-- 详细描述见http://blog.csdn.net/jadyer/article/details/11991457 -->
+    <listener>
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+    </listener>
+
+    <!-- 实例化Spring容器 -->
+    <!-- 应用启动时,该监听器被执行,它会读取Spring相关配置文件,其默认会到WEB-INF中查找applicationContext.xml -->
+    <!-- http://starscream.iteye.com/blog/1107036 -->
+    <!-- http://www.davenkin.me/post/2012-10-18/40039948363 -->
+    <!-- WebApplicationContextUtils.getWebApplicationContext() -->
+    <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-	
-	<servlet>
+
+    <!-- SpringMVC核心分发器 -->
+    <servlet>
 		<servlet-name>springMvc</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
@@ -130,6 +157,7 @@
 	   <location>/WEB-INF/error.html</location>
 	 </error-page>
 -->
+    <!-- Session超时600分钟即10小时(零或负数表示会话永不超时) -->
 	<session-config>
 		<session-timeout>600</session-timeout>
 	</session-config>

@@ -1,6 +1,5 @@
 package com.fh.util;
 
-import com.xmjr.sms.zjhl.SMSOperationUtil;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.NameValuePair;
@@ -58,8 +57,8 @@ public class SmsUtil {
 		try {
 			PostData = "account="+account+"&password="+password+"&mobile="+mobile+"&content="+URLEncoder.encode(code,"utf-8");
            //营销类短信发送接口
-            boolean result = SMSOperationUtil.sendOperationSMS(mobile, URLEncoder.encode(code, "utf-8"));
-            System.out.println(result);
+//            boolean result = SMSOperationUtil.sendOperationSMS(mobile, URLEncoder.encode(code, "utf-8"));
+//            System.out.println(result);
         } catch (UnsupportedEncodingException e) {
 			System.out.println("短信提交失败");
 		}
