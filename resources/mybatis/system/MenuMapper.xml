@@ -23,7 +23,7 @@
 	<result column="MENU_ICON" property="MENU_ICON"/>
 	<result column="MENU_TYPE" property="MENU_TYPE"/>
 	<result column="target" property="target"></result>
-</resultMap>
+    </resultMap>
 
 	<select id="findMaxId" parameterType="pd" resultType="pd">
 		select MAX(MENU_ID) MID FROM SYS_MENU
