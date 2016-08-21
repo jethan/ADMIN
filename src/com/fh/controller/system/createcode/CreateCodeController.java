@@ -1,16 +1,5 @@
 package com.fh.controller.system.createcode;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.fh.controller.base.BaseController;
 import com.fh.util.DelAllFile;
 import com.fh.util.FileDownload;
@@ -18,6 +7,15 @@ import com.fh.util.FileZip;
 import com.fh.util.Freemarker;
 import com.fh.util.PageData;
 import com.fh.util.PathUtil;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /** 
  * 类名称：FreemarkerController
@@ -78,8 +76,9 @@ public class CreateCodeController extends BaseController {
 		Freemarker.printFile("mapperOracleTemplate.ftl", root, "mybatis_oracle/"+packageName+"/"+objectName+"Mapper.xml", filePath, ftlPath);
 		
 		/*生成SQL脚本*/
-		Freemarker.printFile("mysql_SQL_Template.ftl", root, "mysql数据库脚本/"+tabletop+objectName.toUpperCase()+".sql", filePath, ftlPath);
-		Freemarker.printFile("oracle_SQL_Template.ftl", root, "oracle数据库脚本/"+tabletop+objectName.toUpperCase()+".sql", filePath, ftlPath);
+		Freemarker.printFile("mysql_SQL_Template.ftl", root, "mysql_script/"+tabletop+objectName.toUpperCase()+".sql", filePath,
+            ftlPath);
+		Freemarker.printFile("oracle_SQL_Template.ftl", root, "oracle_script/"+tabletop+objectName.toUpperCase()+".sql", filePath, ftlPath);
 		
 		/*生成jsp页面*/
 		Freemarker.printFile("jsp_list_Template.ftl", root, "jsp/"+packageName+"/"+objectName.toLowerCase()+"/"+objectName.toLowerCase()+"_list.jsp", filePath, ftlPath);
