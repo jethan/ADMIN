@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD SQL Map Config 3.0//EN"  
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	
+	<settings> 
+        <setting name="cacheEnabled" value="true" /><!-- 全局映射器启用缓存 -->
+        <!--seGeneratedKeys设置为"true"表明要MyBatis获取由数据库自动生成的主键；-->
+        <setting name="useGeneratedKeys" value="true" />
+        <!--配置默认的执行器。SIMPLE 执行器没 SIMPLE,SIMPLE有什么特别之处。REUSE  执行器重用 REUSE,
+        预处理语句。BATCH  执行器重用语句 BATCH和批量更新-->
+        <setting name="defaultExecutorType" value="REUSE" /> 
+    </settings>
+
+	<typeAliases>
+        <!--alias和xml中的resultType一致-->
+		<typeAlias type="com.jet.entity.system.User" alias="User"/>
+		<typeAlias type="com.jet.entity.system.Role" alias="Role"/>
+		<typeAlias type="com.jet.entity.system.Menu" alias="Menu"/>
+		<typeAlias type="com.jet.util.PageData" alias="pd"/>
+		<!-- 分页 -->
+		<typeAlias type="com.jet.entity.Page" alias="Page"/>
+	</typeAliases>
+
+    <!--配置分页插件PagePlugin-->
+	<plugins>
+		<plugin interceptor="com.jet.plugin.PagePlugin">
+			<property name="dialect" value="mysql"/>
+			<property name="pageSqlId" value=".*listPage.*"/>
+		</plugin>
+	</plugins>
+	
+</configuration>
